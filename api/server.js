@@ -24,7 +24,7 @@ server.use(logger);
 server.use("/api/auth", authRouter);
 //server.use("/api/recipe", authenticate, recipeRouter);
 
-server.get("/", (req, res) => {
+server.get("/friends", (req, res) => {
   res.send(`IT'S WORKING, IT'S WORKING!`);
 });
 
