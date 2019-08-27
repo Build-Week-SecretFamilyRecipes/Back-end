@@ -16,8 +16,19 @@ exports.up = function(knex) {
         .unique();
       recipe.text("source").notNullable();
       recipe.text("description");
+      recipe.integer("amount").notNullable();
+      recipe.text("ingredient").notNullable();
+      recipe.string("measurement", 100);
       recipe.text("instructions").notNullable();
       recipe.text("category").notNullable();
+      recipe
+        .integer("user_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
     });
 };
 

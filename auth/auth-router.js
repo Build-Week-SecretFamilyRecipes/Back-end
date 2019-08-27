@@ -2,9 +2,21 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const Users = require("../recipes/recipe-model.js");
+const Users = require("../users/users-model.js");
 const secrets = require("../config/secrets.js");
 const restricted = require("../auth/authenticate-middleware.js");
+
+function getJwt(user) {
+  const payload = {
+    subject: user.id,
+    username: user.username,
+    jwtid: 1
+  };
+  const options = {
+    expiresIn: "1h"
+  };
+  return jwt.sign(payload, secrets.jwtSecret, options);
+}
 
 router.post("/register", (req, res) => {
   let user = req.body;
@@ -16,7 +28,6 @@ router.post("/register", (req, res) => {
       res.status(201).json(user);
     })
     .catch(error => {
-      console.log("user", user);
       res
         .status(500)
         .json({ message: "Your attempt to add a user has...FAILED!" });
@@ -46,7 +57,7 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/", (req, res) => {
+router.get("/users", (req, res) => {
   Users.getUsers()
     .then(users => {
       res.status(200).json(users);
@@ -56,16 +67,42 @@ router.get("/", (req, res) => {
     });
 });
 
-function getJwt(user) {
-  const payload = {
-    subject: user.id,
-    username: user.username,
-    jwtid: 1
-  };
-  const options = {
-    expiresIn: "1h"
-  };
-  return jwt.sign(payload, secrets.jwtSecret, options);
-}
+router.get("/recipes", (req, res) => {
+  Users.getRecipes()
+    .then(recipes => {
+      res.status(200).json(recipes);
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ message: "You have been denied the recipe list!" });
+    });
+});
+
+router.get("/:id/recipes", (req, res) => {
+  const { id } = req.params;
+  Users.getUserRecipes(id)
+    .then(recipes => {
+      console.log("recipe", recipes);
+      res.status(200).json(recipes);
+    })
+    .catch(error => {
+      console.log("id in catch", id);
+      res.status(500).json({ message: "You gonna be hungry tonight!" });
+    });
+});
+
+router.post("/new-recipe", (req, res) => {
+  Users.addRecipe(recipe)
+    .then(recipe => {
+      console.log("recipe", recipe);
+      res.status(201).json(recipe);
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ message: "Your attempt to add a recipe has...FAILED!" });
+    });
+});
 
 module.exports = router;
