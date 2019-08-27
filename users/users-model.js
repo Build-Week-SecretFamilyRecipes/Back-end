@@ -43,10 +43,6 @@ function getUserRecipes(id) {
     .where({ user_id: id });
 }
 
-// function addRecipe(recipe) {
-//   return db("recipes").insert(recipe);
-// }
-
 function addRecipe(recipe) {
   console.log("string", recipe);
   return db("recipes").insert(recipe);
