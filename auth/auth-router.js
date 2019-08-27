@@ -92,12 +92,14 @@ router.get("/:id/recipes", (req, res) => {
 });
 
 router.post("/new-recipe", (req, res) => {
+  let recipe = req.body;
   Users.addRecipe(recipe)
-    .then(recipe => {
-      console.log("recipe", recipe);
-      res.status(201).json(recipe);
+    .then(recipes => {
+      console.log("recipe", recipes);
+      res.status(201).json(recipes);
     })
     .catch(error => {
+      //console.log("recipe in catch", recipe);
       res
         .status(500)
         .json({ message: "Your attempt to add a recipe has...FAILED!" });
