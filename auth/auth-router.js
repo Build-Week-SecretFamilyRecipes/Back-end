@@ -83,7 +83,6 @@ router.get("/:id/recipes", (req, res) => {
   const { id } = req.params;
   Users.getUserRecipes(id)
     .then(recipes => {
-      console.log("recipe", recipes);
       res.status(200).json(recipes);
     })
     .catch(error => {
@@ -95,15 +94,52 @@ router.post("/new-recipe", (req, res) => {
   let recipe = req.body;
   Users.addRecipe(recipe)
     .then(recipes => {
-      console.log("recipe", recipes);
       res.status(201).json(recipes);
     })
     .catch(error => {
-      //console.log("recipe in catch", recipe);
       res
         .status(500)
         .json({ message: "Your attempt to add a recipe has...FAILED!" });
     });
+});
+
+router.put("/recipes/:id", async (req, res) => {
+  const id = req.params.id;
+  const changes = req.body;
+
+  try {
+    const update = await Users.updateRecipe(id, changes);
+
+    if (update) {
+      res.json({ updateRecipe: update });
+    } else {
+      res
+        .status(404)
+        .json({ message: `Ain't not recipe with that id up in here!` });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Attempt to update recipe has..FAILED!" });
+  }
+});
+
+router.delete("/recipes/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const deleted = await Users.deleteRecipe(id);
+
+    if (deleted) {
+      res.status(201).json({ removed: deleted });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Can not find that recipe you say you want!" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "No, no, no that deletion did not happen!" });
+  }
 });
 
 module.exports = router;

@@ -6,7 +6,9 @@ module.exports = {
   getUsers,
   getUserRecipes,
   addRecipe,
-  getRecipes
+  getRecipes,
+  updateRecipe,
+  deleteRecipe
 };
 
 function addUser(user) {
@@ -44,6 +46,17 @@ function getUserRecipes(id) {
 }
 
 function addRecipe(recipe) {
-  console.log("string", recipe);
   return db("recipes").insert(recipe);
+}
+
+function updateRecipe(id, changes) {
+  return db("recipes")
+    .where({ id })
+    .update(changes);
+}
+
+function deleteRecipe(id) {
+  return db("recipes")
+    .where({ id })
+    .del();
 }
