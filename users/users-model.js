@@ -26,12 +26,24 @@ function getRecipes() {
 }
 
 function getUserRecipes(id) {
-  return db("recipes as r")
-    .innerJoin("users as u", "r.user_id", "=", "u.id")
-    .select(
-      "r.id, r.title, r.source, r.description, r.amount, r.ingredient, r.measurement, r.instructions, r.category, u.username"
-    )
-    .where({ user_id: id });
+  return (
+    db("recipes as r")
+      .innerJoin("users as u", "r.user_id", "=", "u.id")
+      //.select("r.title", "r.source", "r.description")
+      .select(
+        "r.id",
+        "r.title",
+        "r.source",
+        "r.description",
+        "r.ingredient",
+        "r.amount",
+        "r.measurement",
+        "r.instructions",
+        "r.category",
+        "u.username"
+      )
+      .where({ user_id: id })
+  );
 }
 
 function addRecipe(recipe) {

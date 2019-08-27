@@ -87,7 +87,6 @@ router.get("/:id/recipes", (req, res) => {
       res.status(200).json(recipes);
     })
     .catch(error => {
-      console.log("id in catch", id);
       res.status(500).json({ message: "You gonna be hungry tonight!" });
     });
 });
