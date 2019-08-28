@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       if (error) {
         res.status(401).json({ message: "You shall not pass!" });
       } else {
-        req.user = { username: decodedToken.username };
+        req.user = { user_id: decodedToken.subject };
         next();
       }
     });

@@ -42,6 +42,7 @@ router.post("/login", (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = getJwt(user);
+        console.log("token", token);
         res.status(200).json({
           message: `Welcome ${user.username}, you have the keys to the kingdom!`,
           token
@@ -67,10 +68,12 @@ router.get("/users", (req, res) => {
     });
 });
 
-router.get("/recipes", (req, res) => {
+router.get("/recipes", restricted, (req, res) => {
+  console.log("user", req.user);
+  let user = req.user;
   Users.getRecipes()
     .then(recipes => {
-      res.status(200).json(recipes);
+      res.status(200).json({ recipes, user });
     })
     .catch(error => {
       res
@@ -90,37 +93,40 @@ router.get("/:id/recipes", (req, res) => {
     });
 });
 
-// router.post("/new-recipe", (req, res) => {
-//   let recipe = req.body;
-//   Users.addRecipe(recipe)
-//     .then(recipes => {
-//       res.status(201).json(recipes);
-//     })
-//     .catch(error => {
-//       res
-//         .status(500)
-//         .json({ message: "Your attempt to add a recipe has...FAILED!" });
-//     });
-// });
-
-router.post("/new-recipe", async (req, res) => {
-  const recipe = req.body;
-
-  try {
-    const add = await Users.addRecipe(recipe);
-
-    if (add) {
-      res.status(201).json(add);
-    } else {
-      res.status(404).json({ message: `Missing data needed!` });
-    }
-  } catch (error) {
-    console.log("error", error);
-    res
-      .status(500)
-      .json({ message: "Attempt to find the recipe has..FAILED!" });
-  }
+router.post("/new-recipe/:id", restricted, (req, res) => {
+  let recipe = req.body;
+  console.log("user", req.user);
+  Users.addRecipe(recipe)
+    .then(recipes => {
+      res.status(201).json(recipes);
+    })
+    .catch(error => {
+      console.log("error", error);
+      res
+        .status(500)
+        .json({ message: "Your attempt to add a recipe has...FAILED!" });
+    });
 });
+
+// router.post("/new-recipe/", async (req, res) => {
+//   const recipe = req.body;
+//   const id = req.params.id;
+
+//   try {
+//     const add = await Users.addRecipe(recipe);
+
+//     if (add) {
+//       res.status(201).json(add);
+//     } else {
+//       res.status(404).json({ message: `Missing data needed!` });
+//     }
+//   } catch (error) {
+//     console.log("error", error);
+//     res
+//       .status(500)
+//       .json({ message: "Attempt to find the recipe has..FAILED!" });
+//   }
+// });
 
 router.put("/recipes/:id", async (req, res) => {
   const id = req.params.id;

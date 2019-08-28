@@ -46,8 +46,18 @@ function getUserRecipes(id) {
     .where({ user_id: id });
 }
 
+// function addRecipe(recipe) {
+//   return db("recipes").insert(recipe);
+// }
+
 function addRecipe(recipe) {
-  return db("recipes").insert(recipe);
+  // passing 'id' as the second parameter is recommended to ensure the id is returned
+  // when connecting to other database management systems like Postgres
+  return db("recipes")
+    .insert(recipe, "id")
+    .then(([id]) => {
+      return findById(id);
+    });
 }
 
 function updateRecipe(id, changes) {
@@ -75,6 +85,12 @@ function findRecipe(id) {
       "r.instructions",
       "r.category"
     )
+    .where({ id })
+    .first();
+}
+
+function findById(id) {
+  return db("recipes")
     .where({ id })
     .first();
 }
