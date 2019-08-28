@@ -90,17 +90,36 @@ router.get("/:id/recipes", (req, res) => {
     });
 });
 
-router.post("/new-recipe", (req, res) => {
-  let recipe = req.body;
-  Users.addRecipe(recipe)
-    .then(recipes => {
-      res.status(201).json(recipes);
-    })
-    .catch(error => {
-      res
-        .status(500)
-        .json({ message: "Your attempt to add a recipe has...FAILED!" });
-    });
+// router.post("/new-recipe", (req, res) => {
+//   let recipe = req.body;
+//   Users.addRecipe(recipe)
+//     .then(recipes => {
+//       res.status(201).json(recipes);
+//     })
+//     .catch(error => {
+//       res
+//         .status(500)
+//         .json({ message: "Your attempt to add a recipe has...FAILED!" });
+//     });
+// });
+
+router.post("/new-recipe", async (req, res) => {
+  const recipe = req.body;
+
+  try {
+    const add = await Users.addRecipe(recipe);
+
+    if (add) {
+      res.status(201).json(add);
+    } else {
+      res.status(404).json({ message: `Missing data needed!` });
+    }
+  } catch (error) {
+    console.log("error", error);
+    res
+      .status(500)
+      .json({ message: "Attempt to find the recipe has..FAILED!" });
+  }
 });
 
 router.put("/recipes/:id", async (req, res) => {
@@ -142,19 +161,6 @@ router.delete("/recipes/:id", async (req, res) => {
   }
 });
 
-// router.get("/recipes/:id", (req, res) => {
-//   const { id } = req.params;
-//   Users.findRecipe(id)
-//     .then(recipe => {
-//       console.log("then", id);
-//       res.status(200).json(recipe);
-//     })
-//     .catch(error => {
-//       console.log("catch", id);
-//       res.status(500).json({ message: "You gonna be hungry tonight!" });
-//     });
-// });
-
 router.get("/find-recipes/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -166,7 +172,7 @@ router.get("/find-recipes/:id", async (req, res) => {
     } else {
       res
         .status(404)
-        .json({ message: `Ain't not recipe with that id up in here!` });
+        .json({ message: `Ain't no recipe with that id up in here!` });
     }
   } catch (error) {
     console.log("id", id);
