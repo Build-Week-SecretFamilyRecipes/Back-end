@@ -76,6 +76,7 @@ router.get("/recipes", restricted, (req, res) => {
       res.status(200).json({ recipes, user });
     })
     .catch(error => {
+      console.log("in get recipes", error);
       res
         .status(500)
         .json({ message: "You have been denied the recipe list!" });
