@@ -8,7 +8,8 @@ module.exports = {
   addRecipe,
   getRecipes,
   updateRecipe,
-  deleteRecipe
+  deleteRecipe,
+  findRecipe
 };
 
 function addUser(user) {
@@ -59,4 +60,21 @@ function deleteRecipe(id) {
   return db("recipes")
     .where({ id })
     .del();
+}
+
+function findRecipe(id) {
+  return db("recipes as r")
+    .select(
+      "r.id",
+      "r.title",
+      "r.source",
+      "r.description",
+      "r.ingredient",
+      "r.amount",
+      "r.measurement",
+      "r.instructions",
+      "r.category"
+    )
+    .where({ id })
+    .first();
 }

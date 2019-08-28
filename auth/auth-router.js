@@ -142,4 +142,39 @@ router.delete("/recipes/:id", async (req, res) => {
   }
 });
 
+// router.get("/recipes/:id", (req, res) => {
+//   const { id } = req.params;
+//   Users.findRecipe(id)
+//     .then(recipe => {
+//       console.log("then", id);
+//       res.status(200).json(recipe);
+//     })
+//     .catch(error => {
+//       console.log("catch", id);
+//       res.status(500).json({ message: "You gonna be hungry tonight!" });
+//     });
+// });
+
+router.get("/find-recipes/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const find = await Users.findRecipe(id);
+
+    if (find) {
+      res.status(201).json(find);
+    } else {
+      res
+        .status(404)
+        .json({ message: `Ain't not recipe with that id up in here!` });
+    }
+  } catch (error) {
+    console.log("id", id);
+    console.log("error", error);
+    res
+      .status(500)
+      .json({ message: "Attempt to find the recipe has..FAILED!" });
+  }
+});
+
 module.exports = router;
