@@ -69,11 +69,11 @@ router.get("/users", (req, res) => {
 });
 
 router.get("/recipes", (req, res) => {
-  console.log("user", req.user);
-  let user = req.user;
+  // console.log("user", req.user);
+  // let user = req.user;
   Users.getRecipes()
     .then(recipes => {
-      res.status(200).json({ recipes, user });
+      res.status(200).json(recipes);
     })
     .catch(error => {
       console.log("in get recipes", error);
