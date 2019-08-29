@@ -15,10 +15,7 @@ exports.up = function(knex) {
         .notNullable()
         .unique();
       recipe.text("source").notNullable();
-      recipe.text("description");
-      recipe.integer("amount").notNullable();
       recipe.text("ingredient").notNullable();
-      recipe.string("measurement", 100);
       recipe.text("instructions").notNullable();
       recipe.text("category").notNullable();
       recipe
