@@ -42,10 +42,12 @@ router.post("/login", (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = getJwt(user);
+        const user_id = user.id;
         console.log("token", token);
         res.status(200).json({
           message: `Welcome ${user.username}, you have the keys to the kingdom!`,
-          token
+          token,
+          user_id
         });
       } else {
         res
