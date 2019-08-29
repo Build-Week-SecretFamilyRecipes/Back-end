@@ -115,9 +115,7 @@ router.post("/new-recipe/", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const add = await Users.addRecipe(
-      Object.assign({ userId: req.user.id }, recipe)
-    );
+    const add = await Users.addRecipe(Object.assign({ user_id: id }, recipe));
 
     if (add) {
       res.status(201).json(add);
