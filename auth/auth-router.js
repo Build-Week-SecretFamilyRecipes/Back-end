@@ -96,7 +96,7 @@ router.get("/:id/recipes", (req, res) => {
 
 router.post("/new-recipe", (req, res) => {
   let recipe = req.body;
-  let user = req.user.id;
+  let user = req.user;
   console.log("user", user);
   Users.addRecipe(recipe)
     .then(recipes => {
