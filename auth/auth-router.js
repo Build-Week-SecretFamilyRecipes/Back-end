@@ -13,7 +13,7 @@ function getJwt(user) {
     jwtid: 1
   };
   const options = {
-    expiresIn: "1h"
+    expiresIn: "10h"
   };
   return jwt.sign(payload, secrets.jwtSecret, options);
 }
@@ -110,13 +110,13 @@ router.get("/:id/recipes", (req, res) => {
 //     });
 // });
 
-router.post("/new-recipe/", async (req, res) => {
+router.post("/new-recipe/", restricted, async (req, res) => {
   const recipe = req.body;
   const id = req.params.id;
-
+  console.log("token", req.decoded);
   try {
     const add = await Users.addRecipe(Object.assign({ user_id: id }, recipe));
-
+    console.log("user", req.user);
     if (add) {
       res.status(201).json(add);
     } else {

@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
       } else {
         req.user = { user_id: decodedToken.subject };
         //req.user = { username: decodedToken.username };
-        //req.decoded = decoded;
+        //req.decoded = decodedToken.subject;
         next();
       }
     });
