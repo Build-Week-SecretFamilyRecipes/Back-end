@@ -68,7 +68,7 @@ router.get("/users", (req, res) => {
     });
 });
 
-router.get("/recipes", restricted, (req, res) => {
+router.get("/recipes", (req, res) => {
   console.log("user", req.user);
   let user = req.user;
   Users.getRecipes()
@@ -94,7 +94,7 @@ router.get("/:id/recipes", (req, res) => {
     });
 });
 
-router.post("/new-recipe/:id", restricted, (req, res) => {
+router.post("/new-recipe/:id", (req, res) => {
   let recipe = req.body;
   console.log("user", req.user);
   Users.addRecipe(recipe)
