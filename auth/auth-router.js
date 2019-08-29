@@ -94,41 +94,43 @@ router.get("/:id/recipes", (req, res) => {
     });
 });
 
-router.post("/new-recipe", (req, res) => {
-  let recipe = req.body;
-  let user = req.user;
-  console.log("user", user);
-  Users.addRecipe(recipe)
-    .then(recipes => {
-      res.status(201).json(recipes);
-    })
-    .catch(error => {
-      console.log("error", error);
-      res
-        .status(500)
-        .json({ message: "Your attempt to add a recipe has...FAILED!" });
-    });
-});
-
-// router.post("/new-recipe/", async (req, res) => {
-//   const recipe = req.body;
-//   const id = req.params.id;
-
-//   try {
-//     const add = await Users.addRecipe(recipe);
-
-//     if (add) {
-//       res.status(201).json(add);
-//     } else {
-//       res.status(404).json({ message: `Missing data needed!` });
-//     }
-//   } catch (error) {
-//     console.log("error", error);
-//     res
-//       .status(500)
-//       .json({ message: "Attempt to find the recipe has..FAILED!" });
-//   }
+// router.post("/new-recipe", (req, res) => {
+//   let recipe = req.body;
+//   let user = req.user;
+//   console.log("user", user);
+//   Users.addRecipe(recipe)
+//     .then(recipes => {
+//       res.status(201).json(recipes);
+//     })
+//     .catch(error => {
+//       console.log("error", error);
+//       res
+//         .status(500)
+//         .json({ message: "Your attempt to add a recipe has...FAILED!" });
+//     });
 // });
+
+router.post("/new-recipe/", async (req, res) => {
+  const recipe = req.body;
+  const id = req.params.id;
+
+  try {
+    const add = await Users.addRecipe(
+      Object.assign({ userId: req.user.id }, recipe)
+    );
+
+    if (add) {
+      res.status(201).json(add);
+    } else {
+      res.status(404).json({ message: `Missing data needed!` });
+    }
+  } catch (error) {
+    console.log("error", error);
+    res
+      .status(500)
+      .json({ message: "Attempt to find the recipe has..FAILED!" });
+  }
+});
 
 router.put("/recipes/:id", async (req, res) => {
   const id = req.params.id;
