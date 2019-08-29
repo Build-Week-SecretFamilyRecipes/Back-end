@@ -110,12 +110,13 @@ router.get("/:id/recipes", (req, res) => {
 //     });
 // });
 
-router.post("/new-recipe/", restricted, async (req, res) => {
+router.post("/new-recipe/", async (req, res) => {
   const recipe = req.body;
-  const id = req.params.id;
+  // const id = req.params.id;
+  const id = req.user;
   console.log("token", req.decoded);
   try {
-    const add = await Users.addRecipe(Object.assign({ user_id: id }, recipe));
+    const add = await Users.addRecipe(recipe, id);
     console.log("user", req.user);
     if (add) {
       res.status(201).json(add);
