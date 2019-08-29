@@ -94,7 +94,7 @@ router.get("/:id/recipes", (req, res) => {
     });
 });
 
-router.post("/new-recipe/:id", (req, res) => {
+router.post("/new-recipe", (req, res) => {
   let recipe = req.body;
   console.log("user", req.user);
   Users.addRecipe(recipe)
