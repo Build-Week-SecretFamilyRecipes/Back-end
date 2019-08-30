@@ -2,16 +2,11 @@
 
 ## Table of Contents
 
-- [Dummy Data](#dummy-data)
 - [Auth Routes](#auth-routes)
   - [Register User](#register)
   - [Login User](#login)
 - [User Routes](#user-routes)
   - [Get Users](#get-users)
-  - [Get User](#get-user)
-  - [Update Users](#update-user)
-  - [Delete User](#delete-user)
-- [Plant Routes](#plant-routes)
   - [Create Recipe](#create-recipe)
   - [Get Recipes](#get-recipes)
   - [Get Recipe](#get-recipe)
@@ -19,8 +14,6 @@
   - [Delete Recipe](#delete-recipe)
 
 ## API Documentation
-
-### Dummy Data
 
 #### Test user with recipes.
 
@@ -32,22 +25,13 @@
     "recipes": [
         {
             "id": 1,
-            "plantName": "Watermelon",
-            "dailyWaterTime": "08:00:00",
-            "user_id": 1
+            "title": "Ham and Cheese",
+            "source": "Grandpa",
+            "ingredient": "peanuts",
+            "instructions": "Whip it up",
+            "category": "Dinner"
         },
-        {
-            "id": 2,
-            "plantName": "Tomato",
-            "dailyWaterTime": "09:00:00",
-            "user_id": 1
-        },
-        {
-            "id": 3,
-            "plantName": "Sunflower",
-            "dailyWaterTime": "10:00:00",
-            "user_id": 1
-        }
+
     ]
 }
 ```
