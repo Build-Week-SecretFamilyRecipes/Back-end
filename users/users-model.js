@@ -75,10 +75,9 @@ function findRecipe(id) {
       "r.id",
       "r.title",
       "r.source",
-      "r.description",
+
       "r.ingredient",
-      "r.amount",
-      "r.measurement",
+
       "r.instructions",
       "r.category"
     )
